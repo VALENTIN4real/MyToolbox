@@ -1,7 +1,6 @@
-from typing import Annotated, Sequence
+from typing import Annotated, List
 
 from fastapi import Depends, FastAPI, HTTPException, Query
-from sqlalchemy import Sequence
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 from ..database.config import SessionDep, get_session
@@ -18,6 +17,32 @@ def get_users(
         session: Session = SessionDep,
         offset: int = 0,
         limit: Annotated[int, Query(le=100)] = 100,
-    ) -> Sequence[User]:
+    ) -> List[User]:
     users = session.exec(select(User).offset(offset).limit(limit)).all()
     return users
+
+def get_user_by_id(session: Session, user_id: int) -> User:
+    user = session.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    return user
+
+def create_user(session: Session, user: User) -> User:
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
+
+def update_user(session: Session, user_id: int, user: User) -> User:
+    db_user = get_user_by_id(session, user_id)
+    for key, value in user.dict().items():
+        setattr(db_user, key, value)
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return db_user
+
+def delete_user(session: Session, user_id: int) -> None:
+    user = get_user_by_id(session, user_id)
+    session.delete(user)
+    session.commit()
