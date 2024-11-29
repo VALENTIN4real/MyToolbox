@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
-from sqlmodel import Session
-from ..models.user_model import User, get_users
+from sqlmodel import Session, select
+from ..models.user_model import User
 from ..database.config import get_session
 
 router = APIRouter()
 
 @router.get("/users", response_model=List[User])
-def read_users(offset: int = 0, limit: int = 10, session: Session = Depends(get_session)):
+def get_users(offset: int = 0, limit: int = 10, session: Session = Depends(get_session)):
     try:
-        users = get_users(session, offset, limit)
+        users = session.exec(select(User).offset(offset).limit(limit)).all()
         if not users:
             raise HTTPException(status_code=404, detail="No user found.")
         return users
@@ -18,7 +18,7 @@ def read_users(offset: int = 0, limit: int = 10, session: Session = Depends(get_
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/users/{user_id}", response_model=User)
-def read_user(user_id: int, session: Session = Depends(get_session)):
+def get_user_by_id(user_id: int, session: Session = Depends(get_session)):
     try:
         user = session.get(User, user_id)
         if not user:
