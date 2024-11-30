@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Ping from '@/components/Ping.vue'
 import CalculatricePartageTR from '@/components/CalculatricePartageTR.vue'
 import Accueil from '@/components/Accueil.vue'
+import ConfigSettings from '@/components/config/ConfigSettings.vue'
 import App from "@/App.vue";
 
 const router = createRouter({
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/',
       name: 'app',
       component: Accueil
+    },
+    {
+      path: '/configurations',
+      name: 'config',
+      component: ConfigSettings
     },
     {
       path: '/calculatrice-partage-tr',

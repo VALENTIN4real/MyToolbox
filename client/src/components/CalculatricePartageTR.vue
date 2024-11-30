@@ -17,7 +17,7 @@
         <label for="Part patronale d'un titre-restaurant" class="form-label">Part patronale d'un titre-restaurant</label>
         <input v-model="partPatronaleTR" type="number" step="0.01" class="form-control" id="partPatronale">
       </div>
-      <button class="btn btn-primary" v-on:click="calcul">Calculer</button>
+      <button class="btn btn-primary" @click="calcul">Calculer</button>
 
     <div class="mt-3">
       <p>Montant hors titre-restaurants : {{ montantHorsTR }}€</p>

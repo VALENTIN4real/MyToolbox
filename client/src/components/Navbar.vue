@@ -14,7 +14,7 @@
           <a class="nav-link" href="#">Calcul prorata charges</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Configurations</a>
+          <RouterLink class="nav-link" to="/configurations">Configurations</RouterLink>
         </li>
 <!--        <li class="nav-item dropdown">-->
 <!--          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
