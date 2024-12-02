@@ -6,11 +6,32 @@
       <b-tab title="Utilisateurs">
         <div class="d-flex justify-content-between">
           <h2>Utilisateurs</h2>
+          <b-button @click="showModal({})">Ajouter un utilisateur</b-button>
         </div>
         <div class="d-flex justify-content-end">
-          <b-button @click="showModal({})">Ajouter un utilisateur</b-button>
-
-
+          <BTableSimple striped hover>
+            <BThead>
+              <BTr>
+                <BTh>ID</BTh>
+                <BTh>Nom</BTh>
+                <BTh>TR</BTh>
+                <BTh>Montant TR</BTh>
+                <BTh>Part salariale</BTh>
+                <BTh>Part patronale</BTh>
+              </BTr>
+            </BThead>
+            <BTbody v-if="users.length > 0">
+              <BTr v-for="user in users" :key="user.id" @click="showModal(user)">
+                <BTd>{{ user.id }}</BTd>
+                <BTd>{{ user.name }}</BTd>
+                <BTd>{{ user.has_tr }}</BTd>
+                <BTd>{{ user.tr_value }}</BTd>
+                <BTd>{{ user.tr_employee_share }}</BTd>
+                <BTd>{{ user.tr_employer_share }}</BTd>
+              </BTr>
+            </BTbody>
+            <div v-else>Aucun utilisateur trouvé.</div>
+          </BTableSimple>
         </div>
       </b-tab>
       <b-tab title="Second"><p>I'm the second tab</p></b-tab>
@@ -44,7 +65,7 @@ export default {
     showModal(user) {
       console.log("showModal")
       this.userForm = user
-      this.isModalVisible = ! this.isModalVisible
+      this.isModalVisible = true
     },
 
     createUser() {
