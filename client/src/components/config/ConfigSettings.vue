@@ -24,10 +24,10 @@
               <BTr v-for="user in users" :key="user.id" @click="showModal(user)">
                 <BTd>{{ user.id }}</BTd>
                 <BTd>{{ user.name }}</BTd>
-                <BTd>{{ user.has_tr }}</BTd>
-                <BTd>{{ user.tr_value }}</BTd>
-                <BTd>{{ user.tr_employee_share }}</BTd>
-                <BTd>{{ user.tr_employer_share }}</BTd>
+                <BTd>{{ user.has_tr ? "Oui" : "Non"}}</BTd>
+                <BTd>{{ user.tr_value }} €</BTd>
+                <BTd>{{ user.tr_employee_share }} €</BTd>
+                <BTd>{{ user.tr_employer_share }} €</BTd>
               </BTr>
             </BTbody>
             <div v-else>Aucun utilisateur trouvé.</div>
@@ -37,13 +37,14 @@
       <b-tab title="Second"><p>I'm the second tab</p></b-tab>
     </b-tabs>
   </div>
-  <CreateEditUserModal v-model="isModalVisible" :dataForm="userForm" />
+  <CreateEditUserModal v-model="isModalVisible" :dataForm="userForm" @refreshUsers="getUsers"/>
+
 </div>
 </template>
 
 <script>
 import axios from 'axios'
-import CreateEditUserModal from '@/components/tools/CreateEditUserModal.vue'
+import CreateEditUserModal from '@/components/users/CreateEditUserModal.vue'
 
 export default {
   name: 'ConfigSettings',
@@ -68,15 +69,7 @@ export default {
       this.isModalVisible = true
     },
 
-    createUser() {
-      axios.post(this.$env.API_URL + 'users', this.userForm)
-        .then(response => {
-          console.log(response.data)
-        })
-        .catch(err => {
-          console.error(err)
-        })
-    },
+
 
     getUsers() {
       console.log('getUsers')
